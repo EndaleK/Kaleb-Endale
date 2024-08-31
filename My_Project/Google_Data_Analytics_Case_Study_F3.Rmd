@@ -1,0 +1,645 @@
+---
+title: "Case study: How does a bike-share navigate speedy success?"
+author: "Kaleb Endale"
+date: "2024-08-29"
+output: html_notebook
+
+html_document:
+number_sections: true
+toc: true
+---
+### INTRODUCTION
+Welcome to the Cyclistic bike-share analysis case study! In this case study, you work for a ctional company, Cyclistic, along with some key team members. In order to answer the business questions, follow the steps of the data analysis process: Ask, Prepare, Process, Analyze, Share, and Act. Along the way, the Case Study Roadmap tables — including guiding questions and key tasks — will help you stay on the right path.
+
+
+
+#### Scenario
+You are a junior data analyst working on the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, your team wants to understand how casual riders and annual members use Cyclistic bikes dierently. From these insights, your team will design a new marketing strategy to convert casual riders into annual members. Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+
+
+
+#### Stakeholders
+##### Characters
+Lily Moreno: Director of Marketing and manager of the marketing analytics team.
+
+##### Teams
+
+- Cyclistic: A bike-share program with a mission to make bike-sharing more inclusive, featuring various types of bicycles and docking stations.
+- Cyclistic Marketing Analytics Team: A team of data analysts responsible for collecting, analyzing, and reporting data to guide Cyclistic's marketing strategy.
+- Cyclistic Executive Team: A detail-oriented team that makes decisions on marketing program approvals.
+
+
+
+### ASK
+#### Three questions will guide the future marketing program:
+
+- How do annual members and casual riders use Cyclistic bikes dierently?
+- Why would casual riders buy Cyclistic annual memberships?
+- How can Cyclistic use digital media to influence casual riders to become members
+
+#### Guiding questions:
+
+- What is the problem you are trying to solve?
+  - Develop an effective marketing strategies to convert casual bike riders into annual members.
+- How can your insights drive business decisions?
+  - My insights can inform business decisions by providing data-driven recommendations on Cyclistic customer behavior and preferences. 
+
+#### Key tasks:
+
+- Identify the business task: Understand the differences in usage patterns and behaviors between casual riders and annual members to inform marketing strategies.
+- Consider key stakeholders: Cyclistic executive team, Director of Marketing (Lily Moreno), Marketing Analytics team, and Finance Analysts.
+
+#### Deliverable:
+To ensure a focused analysis and effective marketing strategy development to convert casual riders into annual members.
+
+
+### PREPARE
+
+#### Data Sources:
+
+The data used for this analysis is Cyclistic's historical bike trip data, which includes information on:
+ 
+- ride_id
+- rideable_types 
+- start_datetime 
+- end_datetime
+- ride_duration
+- start_station_name
+- start_station_id
+- end_station_name
+- end_station_id
+- distance_traveled
+- member_casual
+- ride_length (min)
+- day_of_week
+- distance_traveled (km)
+
+#### Data Location:
+The data is stored on my hard drive and on <keggle.com>.
+
+#### Data Organization:
+The data is organized in a relational database with each ride represented as a single row in a table. The columns represent the different attributes of each ride, such    as ride_id, rideable_types, ride_duration and membership_types.
+
+#### Data Credibility (ROCCC):
+The data is provided by Motivate International Inc. under a specific license, which lends some credibility. However, a full ROCCC (Reliable, Original, Comprehensive, Current, Cited) analysis would require more information about the data collection methods and contents.
+ 
+#### How are you addressing licensing, privacy, security, and accessibility?
+
+- Licensing: The datasets are made available by Motivate International Inc. under a specific license, which allows for public use. I will ensure compliance with the terms     of this license.
+- Privacy: the data does not contain riders' personally identifiable information (PII) 
+- Security: I will handle the data with care, ensuring it is stored securely and transmitted encrypted. 
+- Accessibility: I will provide clear and concise insights, using visualizations and summaries to make the data accessible to stakeholders.
+
+#### How did you verify the data’s integrity?
+Checked for completeness, consistency, and accuracy.
+
+#### How does it help you answer your question?
+The data allows exploration of how different customer types use Cyclistic bikes, which is crucial for understanding the differences between casual riders and annual members.
+
+#### Are there any problems with the data?
+One limitation mentioned is the inability to connect pass purchases to determine if casual riders are from the service area or have purchased multiple passes.
+
+#### Provides insights into Cyclistic's trip trends and patterns.
+- By analyzing trip trends and patterns, Cyclistic can make data-driven decisions to convert casual riders to members.
+ 
+
+### PROCESS
+
+#### Tools: 
+I choose to use R and its libraries (e.g., dplyr, tidyr) for data manipulation and analysis, and for data visualization. I select R because for its flexibility, ease of use, and ability to handle large datasets.
+
+#### Data Integrity: 
+I ensure data integrity by checking for inconsistencies, and validating data formats.
+
+#### Data Cleaning: 
+I take the following steps to ensure clean data:
+
+- Handle missing values
+- Remove duplicates
+- Correct data formats (e.g., date, time)
+- Remove outliers or anomalies
+
+#### Verification: 
+I verify data cleanliness by:
+  
+- Visualizing data distributions
+- Checking summary statistics
+- check for missing values
+- check for duplicates
+- verfying data consistancy 
+
+#### Documentation: 
+I document the cleaning process using R Markdown, which allows me to track changes, share results, and facilitate reproduciblity. 
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+```
+
+
+```{r trip data}
+# Essential Packages
+install.packages("tidyverse")
+```
+
+
+```{r data manipulation}
+# A collection of packages for data manipulation
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(tidyr)
+library(readxl)
+library(utils)
+library(knitr)
+library(magrittr)
+library(lubridate)
+```
+
+### ANALYZE
+
+- How should you organize your data to perform analysis on it? Answered below. 
+- Has your data been properly forma? Answered below.
+
+```{r}
+# Uploading 2021 tripdata to R, each representing one month of trip dat
+`2021_01` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202101-divvy-tripdata.csv")
+`2021_02` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202102-divvy-tripdata.csv")
+`2021_03` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202103-divvy-tripdata.csv")
+`2021_04` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202104-divvy-tripdata.csv")
+`2021_05` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202105-divvy-tripdata.csv")
+`2021_06` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202106-divvy-tripdata.csv")
+`2021_07` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202107-divvy-tripdata.csv")
+`2021_08` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202108-divvy-tripdata.csv")
+`2021_09` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202109-divvy-tripdata.csv")
+`2021_10` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202110-divvy-tripdata.csv")
+`2021_11` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202111-divvy-tripdata.csv")
+`2021_12` <-read_csv("/Users/Letko/Desktop/Google data_analysis/tripdata/202112-divvy-tripdata.csv")
+```
+
+
+```{r}
+# Combining 2021 trip data
+combined_2021_tripdata <- rbind(`2021_01`, `2021_02`, `2021_03`, `2021_04`, `2021_05`, `2021_06`, 
+                 `2021_07`, `2021_08`, `2021_09`, `2021_10`, `2021_11`, `2021_12`)
+```
+
+
+```{r}
+# Comfirming the total number of rows for the indicidual dataframe
+rowtotal <- sum(nrow(`2021_01`), nrow(`2021_02`), nrow(`2021_03`), nrow(`2021_04`), nrow(`2021_05`), nrow(`2021_06`), 
+                 nrow(`2021_07`), nrow(`2021_08`), nrow(`2021_09`), nrow(`2021_10`), nrow(`2021_11`), nrow(`2021_12`))
+
+print(paste("Total rows:", rowtotal))
+```
+
+
+```{r}
+# Confirm total number of rows for the combined dataframe
+print(paste("Total rows in combined data:", nrow(combined_2021_tripdata)))
+```
+
+
+```{r}
+# Creating a column ride_length
+combined_2021_tripdata <- mutate(combined_2021_tripdata, ride_length = as.numeric(difftime(ended_at, started_at, units = "mins")))
+```
+
+
+```{r}
+# Create a column day_of_week
+combined_2021_tripdata <- mutate(combined_2021_tripdata, day_of_week = wday(started_at, label = TRUE, abbr = FALSE))
+```
+
+
+```{r}
+# Trim whitespaces from character columns
+combined_2021_tripdata <- 
+  mutate(combined_2021_tripdata, ride_length = as.numeric(difftime(ended_at, started_at, units = "mins")))
+```
+
+
+```{r}
+# Remove duplicates from dataframe
+clean_combined_2021_tripdata <- combined_2021_tripdata[!duplicated(combined_2021_tripdata$ride_id), ]
+print(paste("Removed", nrow(combined_2021_tripdata) - nrow(clean_combined_2021_tripdata), "duplicate rows"))
+```
+
+```{r}
+# Remove NA Rows
+clean_combined_2021_tripdata <- drop_na(clean_combined_2021_tripdata)
+```
+
+
+```{r}
+# Trim whitespace from character columns
+clean_combined_2021_tripdata<- combined_2021_tripdata%>% 
+  mutate(across(where(is.character), str_trim))
+```
+
+
+```{r}
+# Create a column distance_traveled
+library(geosphere)
+library(dplyr)
+
+calculate_distance <- function(lat1, lon1, lat2, lon2) {
+  distHaversine(c(lon1, lat1), c(lon2, lat2)) / 1000  # Convert meters to kilometers
+}
+
+clean_combined_2021_tripdata$distance_traveled <- mapply(calculate_distance, 
+                                                   combined_2021_tripdata$start_lat, 
+                                                   combined_2021_tripdata$start_lng, 
+                                                   combined_2021_tripdata$end_lat, 
+                                                   combined_2021_tripdata$end_lng)
+```
+
+
+
+```{r}
+# Remove rides with negative or extremely long durations
+negative_durations <- sum(clean_combined_2021_tripdata$ride_length < 0)
+long_durations <- sum(clean_combined_2021_tripdata$ride_length>= 1440)
+
+clean_combined_2021_tripdata <- clean_combined_2021_tripdata %>%
+  filter(ride_length > 0, ride_length < 1440)
+
+removed_rows <- negative_durations + long_durations
+print(paste("Removed", removed_rows, "rows with invalid durations"))
+```
+
+
+```{r}
+# Round distance_traveled, ride duration to 2 decimal places
+clean_combined_2021_tripdata <- clean_combined_2021_tripdata %>%
+  mutate(distance_traveled = round(distance_traveled, 2), ride_lenght = round(ride_length, 2))
+```
+
+
+
+```{r}
+# Reorder columns for better readability
+clean_combined_2021_tripdata <- clean_combined_2021_tripdata %>% 
+  select(ride_id, member_casual, rideable_type, started_at, ended_at, ride_length, day_of_week,
+         start_station_name, start_station_id, end_station_name, end_station_id, start_lat, start_lng, end_lat, end_lng, distance_traveled)
+```
+
+
+```{r}
+# Remove NA from clean data
+clean_combined_2021_tripdata <- clean_combined_2021_tripdata %>%
+  drop_na()
+```
+
+
+```{r}
+# Clean data head
+head(as.data.frame(clean_combined_2021_tripdata))
+```
+
+
+```{r}
+# Clean data tail
+head(as.data.frame(clean_combined_2021_tripdata))
+```
+
+
+```{r}
+# Clean data string 
+str(clean_combined_2021_tripdata)
+```
+
+```{r}
+# Check for any remaining issues
+summary(as.data.frame(clean_combined_2021_tripdata))
+```
+
+
+```{r}
+# Total number of membership_types
+clean_combined_2021_tripdata %>%
+  count(member_casual) %>%
+  rename(total = n)
+```
+
+
+```{r}
+# Total number of ridable_types
+clean_combined_2021_tripdata %>%
+  count(rideable_type) %>%
+  rename(total = n)
+```
+
+
+```{r}
+# Summary of distance traveled
+trip_distance_summary <- clean_combined_2021_tripdata %>% 
+  group_by(member_casual) %>% 
+  summarise(average_distance_traveled = mean(distance_traveled), standard_deviation = sd(distance_traveled), median_distance_traveled = median(distance_traveled), min_distance_traveled = min(distance_traveled), max_ride_length = max(distance_traveled))
+head(trip_distance_summary)
+```
+
+
+```{r}
+# Summary of ride_length
+trip_length_summary <- clean_combined_2021_tripdata %>% 
+  group_by(member_casual) %>% 
+  summarise(average_ride_length = mean(ride_length), standard_deviation = sd(ride_length), median_ride_length = median(ride_length), min_ride_length = min(ride_length), max_ride_length = max(ride_length))
+head(trip_length_summary)
+```
+
+
+```{r}
+# Top 3 most popular station for members
+top_3_stations <- clean_combined_2021_tripdata %>%
+  filter(member_casual == 'member') %>% 
+  group_by(start_station_name) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  head(3)
+
+print(top_3_stations)
+```
+
+
+```{r}
+# Top 3 most popular station for casuals
+top_3_stations <- clean_combined_2021_tripdata %>%
+  filter(member_casual == 'casual') %>% 
+  group_by(start_station_name) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  head(3)
+
+print(top_3_stations)
+```
+
+
+### SHARE
+
+```{r}
+# Bike Type Preference
+ggplot(clean_combined_2021_tripdata, aes(x = member_casual, fill = rideable_type)) +
+  geom_bar(position = "fill") +
+  labs(title = "Bike Type Preference by Membership Type", x = "member_casual", y = "Proportion")
+```
+
+- This plot tells us about the bike type preference for member and casual riders.
+- The plot reveals whether there are differences in bike type preferences between the two groups
+
+
+```{r}
+# Ride duration by member vs casual
+
+ggplot(clean_combined_2021_tripdata, aes(x = member_casual, y = ride_length, fill = member_casual)) +
+  stat_summary(fun.y = mean, geom = "bar") +
+  labs(title = "Average Ride Duration by Membership Type", x = "Membership Type", y = "Average Duration (minutes)") +
+  scale_fill_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 0),
+        panel.grid.major = element_line())
+```
+
+- This plot tells us about the average ride duration for member and casual riders.
+- The difference in average ride duration between members and casual riders may be significant, suggesting different usage patterns.
+
+
+```{r}
+# Ride numbers by Day of Week
+
+clean_combined_2021_tripdata %>%
+  mutate(day_of_week = wday(started_at, label = TRUE)) %>%
+  ggplot(aes(x = day_of_week, fill = member_casual)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Rides by Day of Week", x = "Day", y = "Number of Rides")
+```
+
+- This plot tells us about the number of rides by day of week for both member and casual riders.
+- We can observe differences in ride patterns between weekdays (Monday to Friday) and weekends (Saturday and Sunday).
+
+
+```{r}
+# Average Rides by hour of the day
+
+clean_combined_2021_tripdata %>%
+  mutate(hour = hour(started_at)) %>%
+  group_by(hour, member_casual) %>%
+  summarise(avg_rides = n()) %>%
+  ggplot(aes(x = hour, y = avg_rides, color = member_casual)) +
+  geom_line() +
+  labs(title = "Average Rides per Hour", x = "Hour of Day", y = "Average Number of Rides")
+```
+
+- This plot helps us understand ride patterns and usage times, which can inform service planning, resource allocation, and marketing strategies.
+- We can identify peak hours for both groups, which may indicate times of high demand or usage.
+- By comparing the two lines, we can see differences in ride patterns between members and casual riders.
+
+
+```{r}
+# Heatmap of ride frequency
+
+members_data <- clean_combined_2021_tripdata %>% filter(member_casual == "member")
+casuals_data <- clean_combined_2021_tripdata %>% filter(member_casual== "casual")
+```
+
+
+```{r}
+# Heatmap of member ride frequency
+
+members_heatmap <- members_data %>%
+  mutate(day_of_week = wday(started_at, label = TRUE),
+         hour = hour(started_at)) %>%
+  group_by(day_of_week, hour) %>%
+  summarise(ride_count = n()) %>%
+  ggplot(aes(x = hour, y = day_of_week, fill = ride_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "#FFC080") +
+  labs(title = "Ride Frequency Heatmap for Members", x = "Hour of Day", y = "Day of Week")
+
+members_heatmap
+```
+
+- The member heatmap provides insights into when and how often members use the service, helping to identify trends, patterns, and potential high demands by day of the week or time of day.  
+
+
+```{r}
+# Heatmap of casual ride frequency
+casuals_heatmap <- casuals_data %>%
+  mutate(day_of_week = wday(started_at, label = TRUE),
+         hour = hour(started_at)) %>%
+  group_by(day_of_week, hour) %>%
+  summarise(ride_count = n()) %>%
+  ggplot(aes(x = hour, y = day_of_week, fill = ride_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "#FFC080") +
+  labs(title = "Ride Frequency Heatmap for Members", x = "Hour of Day", y = "Day of Week")
+
+casuals_heatmap
+```
+
+- The casual heatmap provides insights into when and how often casual riders use the service, helping to identify trends, patterns, and potential high demand by day of the week or time of day.
+
+
+```{r}
+# Ride distances by rider type
+
+ggplot(clean_combined_2021_tripdata, aes(x = distance_traveled, fill = member_casual)) +
+  geom_histogram(alpha = 0.7, bins = 20) +
+  labs(x = "Ride Distance (km)", y = "Count", title = "Ride Distance by Member Type") +
+  theme_classic()
+```
+
+- This plot provides insights into the differences in ride distance behavior between casual riders and members, which can be useful for understanding user preferences, optimizing services, or identifying trends.
+
+
+```{r}
+# ide distances by rider type
+
+ggplot(clean_combined_2021_tripdata, aes(x = member_casual, y = distance_traveled, fill = member_casual)) +
+  geom_boxplot() +
+  labs(x = "Member Type", y = "Ride Distance (km)", title = "Ride Distance by Member Type") +
+  theme_classic()
+```
+
+- Casual riders take longer trips than members, suggesting a preference for more leisurely rides
+
+
+```{r}
+# Average travel distance by rider type
+avg_distance_by_type <- clean_combined_2021_tripdata %>%
+  group_by(member_casual) %>%
+  summarise(avg_distance = mean(distance_traveled))
+print(avg_distance_by_type)
+
+ggplot(avg_distance_by_type, aes(x = member_casual, y = avg_distance, fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Member Type", y = "Average Travel Distance (miles)", title = "Average Travel Distance by Member Type") +
+  theme_classic()
+```
+
+- Casual riders tend to take slightly longer trips compared to members, with an average ride distance that exceeds that of members by a moderate margin. 
+
+
+```{r}
+# Analyze and visualize weekday trips
+trips_by_weekday <- clean_combined_2021_tripdata %>%
+  mutate(weekday = wday(started_at, label = TRUE)) %>%
+  group_by(weekday, member_casual) %>%
+  summarise(trip_count = n(), .groups = 'drop') %>%
+  pivot_wider(names_from = member_casual, values_from = trip_count, values_fill = 0)
+
+# Create the visualization 
+trips_by_weekday %>%
+  pivot_longer(cols = c(member, casual), names_to = "rider_type", values_to = "number_of_trips") %>%
+  ggplot(aes(x = weekday, y = number_of_trips, fill = rider_type)) +
+  geom_col(position = "dodge") +
+  labs(title = "Number of Trips by Rider Type and Weekday",
+       x = "Weekday",
+       y = "Number of Trips",
+       fill = "Rider Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+- Casual riders utilize the service on weekends, with Saturday and Sunday accounting for a disproportionately high number of rides, indicating a strong preference for leisure-oriented trips.
+- Members exhibit consistent usage pattern, with a relatively even distribution of rides across all days of the week, suggesting a more habitual and commute-driven riding behavior.
+
+
+```{r}
+# scales library
+library(scales)
+```
+
+
+```{r}
+# Monthly Distribution of Trips by Membership Status
+clean_combined_2021_tripdata %>% 
+  mutate(month = month(started_at, label = TRUE, abbr = TRUE)) %>%
+  group_by(member_casual, month) %>% 
+  summarise(number_of_rides = n(), .groups = 'drop') %>% 
+  arrange(member_casual, month)  %>% 
+  ggplot(aes(x = month, y = number_of_rides, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = comma(number_of_rides)), 
+            position = position_dodge(width = 0.9),
+            angle = 90,  # Make text vertical
+            vjust = 0.3,  # Adjust vertical position
+            size = 3) +
+  facet_wrap(~member_casual) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Number of Trips by Members and Casual Riders per Month",
+       x = "Month",
+       y = "Number of Rides",
+       fill = "Rider Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "right",
+        plot.height = unit(15, "cm"))
+```
+
+- This visualisation shows the number of rides for each month. 
+- Casual riders peak in activity during the summer months of June to August, accounting for the highest number of rides. The casuals that use Cyclistic in slow months January to April and October   to November can be targeted to convert to anual mambers. 
+- Members display a more consistent usage pattern, with a broader peak spanning May to November, characterized by a relatively even distribution of rides across these months.
+
+
+### ACT
+
+#### Guiding questions
+- What is your final conclusion based on your analysis?
+  
+  - Cyclistic has a prime opportunity to convert casual riders into loyal annual members by introducing a seasonal membership program tailored to peak usage periods. 
+  Launching a Summer Pass, valid from May to September, could significantly boost usage among casual riders during the warmest months, when demand is highest.
+  
+- How could your team and business apply your insights?
+
+  - the data tells a story of a bikeshare system with room for growth and expansion, particularly among casual riders. 
+  By understanding their needs and behaviors, Cyclistic can develop targeted strategies to increase membership and usage.
+  
+- What next steps would you or your stakeholders take based on your findings?
+
+  - Capitalize on the increased interest in cycling during summer
+
+    - Provide casual riders with an attractive, flexible membership option
+    - Encourage longer-term commitment and loyalty among casual riders
+    - Drive revenue growth through increased membership sales
+    - Enhance the overall Cyclistic experience, fostering a stronger connection with casual riders and setting the stage for potential annual membership conversions"
+
+- Is there additional data you could use to expand on your findings?
+
+  - Collect additional data to determine the proportion of casual riders who are:
+    
+    - Local residents (Chicagoans)
+    - Visitors from out of town (tourists, business travelers, etc.)
+    - Students or faculty at local universities
+    - Commuters from surrounding suburbs
+
+
+#### Deliverable
+
+- Based on my analysis, I identified key differences in how annual members and casual riders use Cyclistic bikes. My top three recommendations to leverage these insights are:
+
+  - Targeted Education Campaign: I recommend developing a tailored outreach program to inform casual riders about the benefits of membership, including cost savings, convenience, and priority         access.
+  
+  - Seasonal Membership Option: I suggest introducing a Summer Pass or seasonal membership program to attract local, casual riders who frequently use the bikeshare during peak months.
+    
+  - Strategic Advertising: Place targeted ads (digital screens, posters, or flyers) highlighting the benefits of membership at popular start stations for casual riders.
+  
+  
+#### Conclusion
+
+- My analysis reveals distinct usage patterns between annual members and casual riders. Casual riders tend to use Cyclistic bikes more frequently during good weather months, while members exhibit   consistent usage throughout the year. By introducing a seasonal membership program and educating casual riders about the benefits of membership, I believe Cyclistic can:
+
+  - Recommendations:
+
+    - Increase usage and revenue growth during peak summer months
+    - Enhance the overall user experience
+    - Refine marketing strategies with additional data on casual rider demographics
+  
+  - Next Steps:
+
+    - Implement the recommended strategies to capitalize on summer demand.
+    - Collect additional data on casual rider demographics to refine marketing efforts.
+    - Monitor and evaluate the effectiveness of the strategies to inform future decisions.
+  
