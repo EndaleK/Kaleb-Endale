@@ -1,0 +1,13 @@
+# Example .gitattributes file
+
+# Set line endings to LF for all text files
+*.txt text eol=lf
+
+# Set encoding to UTF-8 for JSON files
+*.json text encoding=utf-8
+
+# Ignore whitespace changes for Markdown files
+*.md -w
+
+# Treat YAML files as binary
+*.yaml binary
