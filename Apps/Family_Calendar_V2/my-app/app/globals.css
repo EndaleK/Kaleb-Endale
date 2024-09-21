@@ -1,0 +1,486 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Cherry Blossom Theme (default) */
+  --background-color: #fef2f2;
+  --calendar-bg: rgba(255, 255, 255, 0.9);
+  --text-color: #4a0e0e;
+  --header-bg: #d4a5a5;
+  --header-text: #4a0e0e;
+  --day-hover: #f9e1e1;
+  --border-color: #e5b3b3;
+  --sidebar-bg: rgba(255, 255, 255, 0.8);
+  --accent-color: #c7666c;
+  --sidebar-text: #4a0e0e;
+  --event-bg: #c7666c;
+  --event-text: #ffffff;
+  --today-bg: #f6d5d5;
+  --today-border: #c7666c;
+  --weekend-bg: #fce8e8;
+}
+
+.theme-ocean {
+  --background-color: #e6f3ff;
+  --calendar-bg: rgba(255, 255, 255, 0.9);
+  --text-color: #0a3d62;
+  --header-bg: #a5d8ff;
+  --header-text: #0a3d62;
+  --day-hover: #cce6ff;
+  --border-color: #79c2ff;
+  --sidebar-bg: rgba(255, 255, 255, 0.8);
+  --accent-color: #3498db;
+  --sidebar-text: #0a3d62;
+  --event-bg: #3498db;
+  --event-text: #ffffff;
+  --today-bg: #e1f0ff;
+  --today-border: #3498db;
+  --weekend-bg: #f0f8ff;
+}
+
+.theme-forest {
+  --background-color: #e8f5e9;
+  --calendar-bg: rgba(255, 255, 255, 0.9);
+  --text-color: #1b5e20;
+  --header-bg: #a5d6a7;
+  --header-text: #1b5e20;
+  --day-hover: #c8e6c9;
+  --border-color: #81c784;
+  --sidebar-bg: rgba(255, 255, 255, 0.8);
+  --accent-color: #4caf50;
+  --sidebar-text: #1b5e20;
+  --event-bg: #4caf50;
+  --event-text: #ffffff;
+  --today-bg: #e8f5e9;
+  --today-border: #4caf50;
+  --weekend-bg: #f1f8e9;
+}
+
+.theme-sunset {
+  --background-color: #fff5e6;
+  --calendar-bg: rgba(255, 255, 255, 0.9);
+  --text-color: #7f4f24;
+  --header-bg: #ffcc80;
+  --header-text: #7f4f24;
+  --day-hover: #ffe0b2;
+  --border-color: #ffb74d;
+  --sidebar-bg: rgba(255, 255, 255, 0.8);
+  --accent-color: #ff9800;
+  --sidebar-text: #7f4f24;
+  --event-bg: #ff9800;
+  --event-text: #ffffff;
+  --today-bg: #fff3e0;
+  --today-border: #ff9800;
+  --weekend-bg: #fff8e1;
+}
+
+body {
+  @apply bg-[var(--background-color)] text-[var(--text-color)] font-sans;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  padding: 0;
+  background-image: url('/cherry-blossom-bg.jpg'); /* Add this image to your public folder */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-container {
+  flex: 1;
+  display: flex;
+  @apply bg-[var(--calendar-bg)] overflow-hidden;
+  @apply grid h-screen w-screen max-w-none;
+  grid-template-columns: 450px 1fr; /* Adjusted for better proportions */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin: 0;
+  border-radius: 12px; /* Rounded corners for the entire container */
+}
+
+.calendar-main {
+  @apply flex flex-col;
+  min-width: 0;
+  height: 100vh;
+  border-left: 1px solid var(--border-color);
+}
+
+.calendar-header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.nav-button {
+  @apply p-2 rounded-full transition-all duration-300;
+  @apply hover:bg-[rgba(255,255,255,0.2)] focus:outline-none;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  @apply grid gap-1 bg-[var(--calendar-bg)];
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-auto-rows: minmax(140px, auto);
+  padding: 0 1rem 1rem; /* Removed top padding */
+}
+
+.calendar-day {
+  @apply bg-[var(--calendar-bg)] p-2 relative transition-all duration-300;
+  @apply hover:bg-[var(--day-hover)];
+  min-height: 140px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.day-number {
+  @apply absolute top-2 right-2 text-sm font-semibold;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.today-number {
+  @apply font-bold text-[var(--accent-color)];
+}
+
+.event-container {
+  @apply mt-6 space-y-1 overflow-y-auto max-h-[calc(100%-2rem)];
+}
+
+.event-indicator {
+  @apply text-xs p-1.5 rounded-md cursor-pointer truncate transition-all duration-300;
+  @apply hover:opacity-90;
+  background-color: var(--event-bg);
+  color: var(--event-text);
+  margin-bottom: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  @apply bg-[var(--sidebar-bg)] p-6 overflow-y-auto;
+  border-right: 1px solid var(--border-color);
+  height: 100vh;
+  width: 450px; /* Adjusted to match the grid template */
+}
+
+.sidebar-section {
+  @apply mb-3 bg-[var(--sidebar-bg)] rounded p-2;
+  box-shadow: none;
+}
+
+.section-title {
+  @apply text-sm font-semibold mb-1 text-[var(--sidebar-text)];
+}
+
+/* Compact Weather, Mini Calendar, Upcoming Events, and Family Members sections */
+.weather-section,
+.mini-calendar-section,
+.upcoming-events-section,
+.family-members-section {
+  @apply mb-2;
+}
+
+.weather-section,
+.mini-calendar-section {
+  @apply flex-1;
+}
+
+.upcoming-events-section,
+.family-members-section {
+  @apply flex-1;
+}
+
+/* Remove blank section from calendar */
+.calendar-grid {
+  grid-template-rows: auto 1fr;
+}
+
+/* Simple scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--calendar-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.days-of-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background-color: var(--calendar-bg);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.day-name {
+  text-align: center;
+  padding: 0.6rem; /* Increased padding to accommodate larger font size */
+  font-size: 1.08rem; /* Increased by 20% from 0.9rem */
+  font-weight: 600; /* Made it slightly bolder */
+}
+
+.calendar-grid-wrapper {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.calendar-grid {
+  @apply grid gap-0 bg-[var(--calendar-bg)];
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-auto-rows: minmax(140px, auto); /* Increased from 120px to 140px */
+}
+
+/* Add these new styles at the end of your globals.css file */
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-title {
+  text-align: center;
+  padding: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+/* Adjust the calendar container to fit within the new layout */
+.calendar-container {
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 1400px; /* Adjust this value as needed */
+  width: 100%;
+}
+
+.calendar-day.weekend {
+  background-color: var(--weekend-bg);
+}
+
+.calendar-day.today {
+  background-color: var(--today-bg);
+  font-weight: bold;
+}
+
+/* Add this at the end of your globals.css file */
+
+/* Smooth transitions for theme changes */
+body, .calendar-container, .sidebar, .calendar-day, .event-indicator {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Ensure text is visible in dark mode */
+.dark {
+  color: var(--text-color);
+}
+
+.weather-container {
+  background-color: var(--calendar-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather-container h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weather-info img {
+  width: 64px;
+  height: 64px;
+}
+
+.weather-info p {
+  font-size: 1.125rem;
+  color: var(--text-color);
+}
+
+.mini-calendar {
+  background-color: var(--calendar-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mini-calendar h3 {
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.mini-calendar .bg-accent-color {
+  background-color: var(--accent-color);
+}
+
+.daily-quote {
+  background-color: var(--calendar-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-quote h3 {
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.daily-quote p {
+  color: var(--text-color);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Add styles for the theme selector */
+.theme-selector {
+  background-color: var(--calendar-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.theme-selector:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Add styles for the family members list */
+.family-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.family-member {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--calendar-bg);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.member-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+.remove-button {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.remove-button:hover {
+  opacity: 1;
+}
+
+.add-member-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.add-button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  opacity: 0.9;
+}
+
+/* Add this to your globals.css file */
+.famsync-title {
+  font-size: 2.4rem; /* Increased by 60% from 1.5rem */
+  font-weight: bold; /* Make it bold for better visibility */
+  color: var(--accent-color); /* Use the accent color for emphasis */
+  text-align: center; /* Center the text */
+  margin: 1rem 0; /* Add some vertical margin */
+}

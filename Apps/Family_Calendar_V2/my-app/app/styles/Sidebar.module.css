@@ -1,0 +1,120 @@
+.sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--text-color);
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+  height: 100vh;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.eventList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.eventItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.eventColor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.eventInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventTitle {
+  font-weight: bold;
+}
+
+.eventDate, .eventMember {
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.familyList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.familyMember {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.memberColor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.removeButton {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.removeButton:hover {
+  opacity: 1;
+}
+
+.addMember {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.addMemberInput {
+  flex-grow: 1;
+  padding: 0.3rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  background-color: var(--calendar-bg);
+  color: var(--text-color);
+}
+
+.addButton {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: var(--accent-color);
+  opacity: 0.9;
+}

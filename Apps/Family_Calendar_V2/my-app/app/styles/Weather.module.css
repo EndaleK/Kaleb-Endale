@@ -1,0 +1,35 @@
+.weather {
+  padding: 1rem;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #0d47a1;
+}
+
+.weatherInfo {
+  display: flex;
+  align-items: center;
+}
+
+.weatherInfo svg {
+  margin-right: 0.75rem;
+  color: #1976d2;
+}
+
+.weatherInfo p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1565c0;
+}
+
+.loading {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
