@@ -1,0 +1,307 @@
+/* Modern and attractive styles for the Data QC Tracker */
+
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --primary-light: #ebf5fb;
+    --background-color: #f5f7fa;
+    --text-color: #2c3e50;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+}
+
+.main .block-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h2, h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.stTextInput, .stNumberInput, .stDateInput, .stTimeInput, .stSelectbox, .stTextArea, .stMultiSelect {
+    margin-bottom: 1.5rem;
+}
+
+.stButton > button {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    border: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.stButton > button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.dataframe {
+    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5rem 0 2.5rem;
+    width: 100%;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dataframe th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    border-top: 1px solid var(--primary-dark);
+}
+
+.dataframe td {
+    border-bottom: 1px solid #ecf0f1;
+    padding: 0.8rem;
+    transition: background-color 0.3s ease;
+}
+
+.dataframe tr:hover td {
+    background-color: var(--primary-light);
+}
+
+.js-plotly-plot {
+    margin: 2.5rem 0;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.sidebar .sidebar-content {
+    background-color: #FFFFFF;
+    padding: 1.5rem;
+    border-right: 1px solid #ecf0f1;
+}
+
+.stSuccess, .stError {
+    padding: 1rem 1.2rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.stSuccess {
+    background-color: #d4efdf;
+    color: #27ae60;
+    border-left: 5px solid var(--success-color);
+}
+
+.stError {
+    background-color: #fadbd8;
+    color: #c0392b;
+    border-left: 5px solid var(--error-color);
+}
+
+.stMetric {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border-left: 5px solid;
+}
+
+.stMetric:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.stMetric .label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.stMetric .value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stMetric .delta {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* KPI color variations */
+.kpi-primary {
+    border-color: #3498db;
+}
+
+.kpi-primary .label {
+    color: #2980b9;
+}
+
+.kpi-primary .value {
+    color: #3498db;
+}
+
+.kpi-success {
+    border-color: #2ecc71;
+}
+
+.kpi-success .label {
+    color: #27ae60;
+}
+
+.kpi-success .value {
+    color: #2ecc71;
+}
+
+.kpi-warning {
+    border-color: #f39c12;
+}
+
+.kpi-warning .label {
+    color: #d35400;
+}
+
+.kpi-warning .value {
+    color: #f39c12;
+}
+
+.kpi-danger {
+    border-color: #e74c3c;
+}
+
+.kpi-danger .label {
+    color: #c0392b;
+}
+
+.kpi-danger .value {
+    color: #e74c3c;
+}
+
+.kpi-info {
+    border-color: #9b59b6;
+}
+
+.kpi-info .label {
+    color: #8e44ad;
+}
+
+.kpi-info .value {
+    color: #9b59b6;
+}
+
+form {
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.stRadio > label, .stSlider > label {
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 0.8rem;
+}
+
+.streamlit-expander {
+    border: 1px solid #ecf0f1;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+.streamlit-expander:hover {
+    box-shadow: var(--shadow);
+}
+
+.streamlit-expander .streamlit-expander-header {
+    background-color: var(--primary-light);
+    padding: 1rem 1.2rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2, h3 {
+        font-size: 1.8rem;
+    }
+
+    .stMetric {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #121212;
+        --text-color: #E0E0E0;
+        --primary-light: #1565C0;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    .dataframe, form, .stMetric, .sidebar .sidebar-content {
+        background-color: #1E1E1E;
+    }
+
+    .dataframe th {
+        background-color: var(--primary-dark);
+    }
+
+    .dataframe tr:hover td {
+        background-color: #2C2C2C;
+    }
+
+    .js-plotly-plot .plotly .main-svg {
+        background-color: #1E1E1E !important;
+    }
+
+    .stSuccess {
+        background-color: #1B5E20;
+        color: #C8E6C9;
+    }
+
+    .stError {
+        background-color: #B71C1C;
+        color: #FFCDD2;
+    }
+}
