@@ -47,4 +47,4 @@ This is a Streamlit application for tracking and visualizing Data QC information
 4. Edit or delete existing data.
 5. Explore the Summary Dashboard for insights and visualizations.
 
-For any issues or questions, please contact the repository maintainer.
+For any issues or questions, please contact Kaleb Endale.
