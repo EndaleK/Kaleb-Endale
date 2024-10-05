@@ -1,307 +1,252 @@
-/* Modern and attractive styles for the Data QC Tracker */
-
 :root {
     --primary-color: #3498db;
     --primary-dark: #2980b9;
     --primary-light: #ebf5fb;
-    --background-color: #f5f7fa;
-    --text-color: #2c3e50;
+    --background-color: #f8f9fa;
+    --text-color: #333333;
     --success-color: #2ecc71;
     --error-color: #e74c3c;
-    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-color);
     background-color: var(--background-color);
     line-height: 1.6;
-}
-
-.main .block-container {
+  }
+  
+  .main .block-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem 3rem;
-}
-
-h1, h2, h3 {
-    font-family: 'Poppins', sans-serif;
+    padding: 2rem;
+  }
+  
+  h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
     color: var(--primary-dark);
     margin-bottom: 1.5rem;
-}
-
-h1 {
-    font-size: 2.8rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 2rem;
-}
-
-h2, h3 {
-    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  h2, h3 {
+    font-size: 1.8rem;
     font-weight: 600;
     margin-top: 2.5rem;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 0.5rem;
-}
-
-.stTextInput, .stNumberInput, .stDateInput, .stTimeInput, .stSelectbox, .stTextArea, .stMultiSelect {
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--primary-light);
+  }
+  
+  .stTextInput, .stNumberInput, .stDateInput, .stTimeInput, .stSelectbox, .stTextArea, .stMultiSelect {
     margin-bottom: 1.5rem;
-}
-
-.stButton > button {
+  }
+  
+  .stButton > button {
     background-color: var(--primary-color);
     color: white;
     font-weight: 600;
-    padding: 0.7rem 1.5rem;
-    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     border: none;
     transition: var(--transition);
     box-shadow: var(--shadow);
-}
-
-.stButton > button:hover {
+  }
+  
+  .stButton > button:hover {
     background-color: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-.dataframe {
-    font-size: 0.9rem;
+  }
+  
+  .dataframe {
+    font-size: 0.95rem;
     border-collapse: separate;
     border-spacing: 0;
-    margin: 1.5rem 0 2.5rem;
     width: 100%;
     box-shadow: var(--shadow);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-}
-
-.dataframe th {
+    margin: 1.5rem 0;
+  }
+  
+  .dataframe th {
     background-color: var(--primary-color);
     color: white;
     font-weight: 600;
     text-align: left;
     padding: 1rem;
-    border-top: 1px solid var(--primary-dark);
-}
-
-.dataframe td {
-    border-bottom: 1px solid #ecf0f1;
-    padding: 0.8rem;
-    transition: background-color 0.3s ease;
-}
-
-.dataframe tr:hover td {
+  }
+  
+  .dataframe td {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    padding: 1rem;
+  }
+  
+  .dataframe tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .dataframe tr:hover td {
     background-color: var(--primary-light);
-}
-
-.js-plotly-plot {
+  }
+  
+  .js-plotly-plot {
     margin: 2.5rem 0;
     box-shadow: var(--shadow);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.sidebar .sidebar-content {
-    background-color: #FFFFFF;
-    padding: 1.5rem;
-    border-right: 1px solid #ecf0f1;
-}
-
-.stSuccess, .stError {
-    padding: 1rem 1.2rem;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-}
-
-.stSuccess {
-    background-color: #d4efdf;
-    color: #27ae60;
-    border-left: 5px solid var(--success-color);
-}
-
-.stError {
-    background-color: #fadbd8;
-    color: #c0392b;
-    border-left: 5px solid var(--error-color);
-}
-
-.stMetric {
-    background-color: #FFFFFF;
     border-radius: 10px;
-    padding: 1.5rem;
+    overflow: hidden;
+  }
+  
+  .sidebar .sidebar-content {
+    background-color: white;
+    padding: 2rem;
+    border-right: 1px solid #eee;
+  }
+  
+  .stSuccess, .stError {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  
+  .stSuccess {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .stError {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .stMetric {
+    border-radius: 12px;
+    padding: 1.75rem;
     text-align: center;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border-left: 5px solid;
-}
-
-.stMetric:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stMetric:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-}
-
-.stMetric .label {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  }
+  
+  .stMetric .label {
     font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.8rem;
-}
-
-.stMetric .value {
-    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .stMetric .value {
+    font-size: 2.75rem;
     font-weight: 700;
-}
-
-.stMetric .delta {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-}
-
-/* KPI color variations */
-.kpi-primary {
-    border-color: #3498db;
-}
-
-.kpi-primary .label {
-    color: #2980b9;
-}
-
-.kpi-primary .value {
-    color: #3498db;
-}
-
-.kpi-success {
-    border-color: #2ecc71;
-}
-
-.kpi-success .label {
-    color: #27ae60;
-}
-
-.kpi-success .value {
-    color: #2ecc71;
-}
-
-.kpi-warning {
-    border-color: #f39c12;
-}
-
-.kpi-warning .label {
-    color: #d35400;
-}
-
-.kpi-warning .value {
-    color: #f39c12;
-}
-
-.kpi-danger {
-    border-color: #e74c3c;
-}
-
-.kpi-danger .label {
-    color: #c0392b;
-}
-
-.kpi-danger .value {
-    color: #e74c3c;
-}
-
-.kpi-info {
-    border-color: #9b59b6;
-}
-
-.kpi-info .label {
-    color: #8e44ad;
-}
-
-.kpi-info .value {
-    color: #9b59b6;
-}
-
-form {
-    background-color: #FFFFFF;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .stMetric .delta {
+    font-size: 1.1rem;
+    margin-top: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .stMetric:nth-child(6n+1) { background-color: #3498db; }
+  .stMetric:nth-child(6n+2) { background-color: #2ecc71; }
+  .stMetric:nth-child(6n+3) { background-color: #e74c3c; }
+  .stMetric:nth-child(6n+4) { background-color: #f39c12; }
+  .stMetric:nth-child(6n+5) { background-color: #9b59b6; }
+  .stMetric:nth-child(6n) { background-color: #1abc9c; }
+  
+  .kpi-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  form {
+    background-color: white;
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: var(--shadow);
-}
-
-.stRadio > label, .stSlider > label {
+  }
+  
+  .stRadio > label, .stSlider > label {
     font-weight: 600;
     color: var(--primary-dark);
-    margin-bottom: 0.8rem;
-}
-
-.streamlit-expander {
-    border: 1px solid #ecf0f1;
-    border-radius: 8px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .streamlit-expander {
+    border: 1px solid #eee;
+    border-radius: 10px;
     margin-bottom: 1.5rem;
     transition: var(--transition);
-}
-
-.streamlit-expander:hover {
+  }
+  
+  .streamlit-expander:hover {
     box-shadow: var(--shadow);
-}
-
-.streamlit-expander .streamlit-expander-header {
+  }
+  
+  .streamlit-expander .streamlit-expander-header {
     background-color: var(--primary-light);
-    padding: 1rem 1.2rem;
+    padding: 1rem 1.25rem;
     font-weight: 600;
     color: var(--primary-dark);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2.2rem;
-    }
-
-    h2, h3 {
-        font-size: 1.8rem;
-    }
-
-    .stMetric {
-        margin-bottom: 1rem;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
+  }
+  
+  @media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2, h3 { font-size: 1.5rem; }
+    .stMetric { margin-bottom: 1rem; }
+  }
+  
+  @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: #121212;
-        --text-color: #E0E0E0;
-        --primary-light: #1565C0;
+      --background-color: #121212;
+      --text-color: #e0e0e0;
+      --primary-light: #1565c0;
     }
-
-    body {
-        background-image: none;
-    }
-
+  
+    body { background-image: none; }
+  
     .dataframe, form, .stMetric, .sidebar .sidebar-content {
-        background-color: #1E1E1E;
+      background-color: #1e1e1e;
     }
-
-    .dataframe th {
-        background-color: var(--primary-dark);
-    }
-
-    .dataframe tr:hover td {
-        background-color: #2C2C2C;
-    }
-
+  
+    .dataframe th { background-color: var(--primary-dark); }
+    .dataframe tr:hover td { background-color: #2c2c2c; }
+  
     .js-plotly-plot .plotly .main-svg {
-        background-color: #1E1E1E !important;
+      background-color: #1e1e1e !important;
     }
-
+  
     .stSuccess {
-        background-color: #1B5E20;
-        color: #C8E6C9;
+      background-color: #1b5e20;
+      color: #c8e6c9;
     }
-
+  
     .stError {
-        background-color: #B71C1C;
-        color: #FFCDD2;
+      background-color: #b71c1c;
+      color: #ffcdd2;
     }
-}
+  
+    .kpi-container, form {
+      background-color: #1e1e1e;
+    }
+  }

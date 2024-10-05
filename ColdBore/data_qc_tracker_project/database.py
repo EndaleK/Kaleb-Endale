@@ -5,6 +5,7 @@ import streamlit as st
 from datetime import datetime
 import time
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()  # This loads the variables from .env file
 
@@ -42,17 +43,15 @@ def create_table(conn):
                     id TEXT PRIMARY KEY,
                     job_number TEXT,
                     date DATE,
+                    submitted_at TIMESTAMP,
                     well_name TEXT,
                     pad_name TEXT,
                     stage INTEGER,
                     job_type TEXT,
                     service_provider TEXT,
                     client TEXT,
-                    start_time TIME,
-                    end_time TIME,
                     comments TEXT,
                     operation TEXT,
-                    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     xml_received BOOLEAN,
                     asr_calculated BOOLEAN,
                     full_timeblock BOOLEAN,
@@ -81,10 +80,22 @@ def insert_data(conn, data):
         conn = init_connection()
 
     try:
+        # Ensure data_completeness is stored as an integer
+        data['data_completeness'] = int(data['data_completeness'])
+        
+        # Format submitted_at to include both date and time
+        current_date = datetime.now().date()
+        time_obj = datetime.strptime(data['submitted_at'], '%H:%M:%S').time()
+        data['submitted_at'] = datetime.combine(current_date, time_obj)
+        
         with conn.cursor() as cur:
             cur.execute("""
-                INSERT INTO qc_data (id, job_number, date, well_name, pad_name, stage, job_type, service_provider, client, start_time, end_time, comments, operation, submitted_at, xml_received, asr_calculated, full_timeblock, sub_activities, data_completeness)
-                VALUES (%(id)s, %(job_number)s, %(date)s, %(well_name)s, %(pad_name)s, %(stage)s, %(job_type)s, %(service_provider)s, %(client)s, %(start_time)s, %(end_time)s, %(comments)s, %(operation)s, %(submitted_at)s, %(xml_received)s, %(asr_calculated)s, %(full_timeblock)s, %(sub_activities)s, %(data_completeness)s)
+                INSERT INTO qc_data (id, job_number, date, submitted_at, well_name, pad_name, stage, job_type, 
+                                     service_provider, client, comments, operation, xml_received, asr_calculated, 
+                                     full_timeblock, sub_activities, data_completeness)
+                VALUES (%(id)s, %(job_number)s, %(date)s, %(submitted_at)s, %(well_name)s, %(pad_name)s, %(stage)s, 
+                        %(job_type)s, %(service_provider)s, %(client)s, %(comments)s, %(operation)s, %(xml_received)s, 
+                        %(asr_calculated)s, %(full_timeblock)s, %(sub_activities)s, %(data_completeness)s)
             """, data)
             conn.commit()
         st.success("Data inserted successfully.")
@@ -117,8 +128,7 @@ def update_data(conn, data):
             cur.execute("""
                 UPDATE qc_data
                 SET job_number = %(job_number)s, date = %(date)s, well_name = %(well_name)s, pad_name = %(pad_name)s, stage = %(stage)s, job_type = %(job_type)s,
-                    service_provider = %(service_provider)s, client = %(client)s, start_time = %(start_time)s,
-                    end_time = %(end_time)s, comments = %(comments)s, operation = %(operation)s, xml_received = %(xml_received)s,
+                    service_provider = %(service_provider)s, client = %(client)s, comments = %(comments)s, operation = %(operation)s, xml_received = %(xml_received)s,
                     asr_calculated = %(asr_calculated)s, full_timeblock = %(full_timeblock)s, sub_activities = %(sub_activities)s, data_completeness = %(data_completeness)s
                 WHERE id = %(id)s
             """, data)
@@ -203,17 +213,15 @@ def reorder_columns(conn):
                         id TEXT PRIMARY KEY,
                         job_number TEXT NOT NULL,
                         date DATE,
+                        submitted_at TIME,
                         well_name TEXT,
                         pad_name TEXT,
                         stage INTEGER,
                         job_type TEXT,
                         service_provider TEXT,
                         client TEXT,
-                        start_time TIME,
-                        end_time TIME,
                         comments TEXT,
                         operation TEXT,
-                        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         xml_received BOOLEAN,
                         asr_calculated BOOLEAN,
                         full_timeblock BOOLEAN,
@@ -222,8 +230,8 @@ def reorder_columns(conn):
                     );
 
                     INSERT INTO qc_data_new
-                    SELECT id, job_number, date, well_name, pad_name, stage, job_type, service_provider, client,
-                           start_time, end_time, comments, operation, submitted_at, xml_received, asr_calculated,
+                    SELECT id, job_number, date, submitted_at::TIME, well_name, pad_name, stage, job_type, 
+                           service_provider, client, comments, operation, xml_received, asr_calculated,
                            full_timeblock, sub_activities, data_completeness
                     FROM qc_data;
 
@@ -259,3 +267,111 @@ def fetch_row_by_id(conn, id):
     except Exception as e:
         st.error(f"Error fetching data: {str(e)}")
         raise
+
+def fetch_job_info(conn, job_number):
+    if not check_connection(conn):
+        st.error("Database connection is closed. Attempting to reconnect...")
+        conn = init_connection()
+
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            query = """
+                SELECT DISTINCT pad_name, client, job_type, array_agg(DISTINCT well_name) as well_names
+                FROM qc_data
+                WHERE job_number = %s
+                GROUP BY pad_name, client, job_type
+            """
+            print(f"Executing query: {query} with job_number: {job_number}")
+            cur.execute(query, (job_number,))
+            result = cur.fetchone()
+            print(f"Query result: {result}")
+            if result:
+                result['well_names'] = result['well_names'] or []  # Ensure well_names is always a list
+            return result
+    except Exception as e:
+        print(f"Error in fetch_job_info: {str(e)}")
+        st.error(f"Error fetching job info: {str(e)}")
+        raise
+
+def delete_job(conn, job_number):
+    if not check_connection(conn):
+        st.error("Database connection is closed. Attempting to reconnect...")
+        conn = init_connection()
+
+    try:
+        with conn.cursor() as cur:
+            print(f"Executing DELETE query for job number: {job_number}")
+            cur.execute("DELETE FROM qc_data WHERE job_number = %s", (job_number,))
+            rows_deleted = cur.rowcount
+            print(f"Rows deleted: {rows_deleted}")
+            conn.commit()
+        return rows_deleted
+    except Exception as e:
+        print(f"Error in delete_job: {str(e)}")
+        st.error(f"Error deleting job: {str(e)}")
+        conn.rollback()
+        raise
+
+def job_number_exists(conn, job_number):
+    if not check_connection(conn):
+        st.error("Database connection is closed. Attempting to reconnect...")
+        conn = init_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT EXISTS(SELECT 1 FROM qc_data WHERE job_number = %s)", (job_number,))
+            return cur.fetchone()[0]
+    except Exception as e:
+        st.error(f"Error checking if job number exists: {str(e)}")
+        raise
+
+def fetch_job_data(conn, job_number):
+    if not check_connection(conn):
+        st.error("Database connection is closed. Attempting to reconnect...")
+        conn = init_connection()
+
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT * FROM qc_data
+                WHERE job_number = %s
+                ORDER BY date, submitted_at
+            """, (job_number,))
+            return cur.fetchall()
+    except Exception as e:
+        print(f"Error in fetch_job_data: {str(e)}")
+        st.error(f"Error fetching job data: {str(e)}")
+        raise
+
+def update_job_details(conn, job_number, pad_name, client, job_type):
+    if not check_connection(conn):
+        st.error("Database connection is closed. Attempting to reconnect...")
+        conn = init_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                UPDATE qc_data
+                SET pad_name = %s, client = %s, job_type = %s
+                WHERE job_number = %s
+            """, (pad_name, client, job_type, job_number))
+            conn.commit()
+        return True
+    except Exception as e:
+        print(f"Error in update_job_details: {str(e)}")
+        st.error(f"Error updating job details: {str(e)}")
+        conn.rollback()
+        return False
+
+def fetch_grafana_alerts(grafana_url, api_key):
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    try:
+        response = requests.get(f"{grafana_url}/api/alerts", headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        st.error(f"Error fetching Grafana alerts: {str(e)}")
+        return None
