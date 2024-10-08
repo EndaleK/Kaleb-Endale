@@ -48,7 +48,6 @@ def create_table(conn):
                     pad_name TEXT,
                     stage INTEGER,
                     job_type TEXT,
-                    service_provider TEXT,
                     client TEXT,
                     comments TEXT,
                     operation TEXT,
@@ -91,10 +90,10 @@ def insert_data(conn, data):
         with conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO qc_data (id, job_number, date, submitted_at, well_name, pad_name, stage, job_type, 
-                                     service_provider, client, comments, operation, xml_received, asr_calculated, 
+                                     client, comments, operation, xml_received, asr_calculated, 
                                      full_timeblock, sub_activities, data_completeness)
                 VALUES (%(id)s, %(job_number)s, %(date)s, %(submitted_at)s, %(well_name)s, %(pad_name)s, %(stage)s, 
-                        %(job_type)s, %(service_provider)s, %(client)s, %(comments)s, %(operation)s, %(xml_received)s, 
+                        %(job_type)s, %(client)s, %(comments)s, %(operation)s, %(xml_received)s, 
                         %(asr_calculated)s, %(full_timeblock)s, %(sub_activities)s, %(data_completeness)s)
             """, data)
             conn.commit()
@@ -128,7 +127,7 @@ def update_data(conn, data):
             cur.execute("""
                 UPDATE qc_data
                 SET job_number = %(job_number)s, date = %(date)s, well_name = %(well_name)s, pad_name = %(pad_name)s, stage = %(stage)s, job_type = %(job_type)s,
-                    service_provider = %(service_provider)s, client = %(client)s, comments = %(comments)s, operation = %(operation)s, xml_received = %(xml_received)s,
+                    client = %(client)s, comments = %(comments)s, operation = %(operation)s, xml_received = %(xml_received)s,
                     asr_calculated = %(asr_calculated)s, full_timeblock = %(full_timeblock)s, sub_activities = %(sub_activities)s, data_completeness = %(data_completeness)s
                 WHERE id = %(id)s
             """, data)
@@ -218,7 +217,6 @@ def reorder_columns(conn):
                         pad_name TEXT,
                         stage INTEGER,
                         job_type TEXT,
-                        service_provider TEXT,
                         client TEXT,
                         comments TEXT,
                         operation TEXT,
@@ -231,7 +229,7 @@ def reorder_columns(conn):
 
                     INSERT INTO qc_data_new
                     SELECT id, job_number, date, submitted_at::TIME, well_name, pad_name, stage, job_type, 
-                           service_provider, client, comments, operation, xml_received, asr_calculated,
+                           client, comments, operation, xml_received, asr_calculated,
                            full_timeblock, sub_activities, data_completeness
                     FROM qc_data;
 

@@ -256,7 +256,6 @@ with tab1:
                     
                     with col2:
                         operation = st.selectbox("Operation", ["Frac", "Wireline", "Pump Down", "Coil Tubing", "Perforating", "Logging", "Well Testing", "Slickline"])
-                        service_provider = st.text_input("Service Provider")
                         client = st.text_input("Client", value=st.session_state.get('current_job_info', {}).get('client', ''))
                     
                     comments = st.text_area("Comments")
@@ -287,7 +286,6 @@ with tab1:
                         "well_name": well_name,
                         "stage": stage,
                         "job_type": job_type,
-                        "service_provider": service_provider,
                         "client": client,
                         "comments": comments,
                         "operation": operation,
@@ -375,21 +373,15 @@ with tab1:
         # Display filtered data
         if not filtered_df.empty:
             # Define a function to color the cells
-            def color_cells(val, column, row):
+            def color_cells(val, column):
                 if column in ['xml_received', 'asr_calculated', 'full_timeblock', 'sub_activities']:
-                    return 'background-color: #C8E6C9' if val else 'background-color: #FFCDD2'
+                    return 'background-color: #C8E6C9; color: #1B5E20;' if val else 'background-color: #FFCDD2; color: #B71C1C;'
                 elif column == 'data_completeness':
                     return 'background-color: #C8E6C9' if val == 100 else 'background-color: #FFCDD2'
-                elif row['operation'].lower() == 'wireline':
-                    return 'background-color: #E3F2FD'  # Light blue for wireline data
-                elif row['operation'].lower() == 'frac':
-                    return 'background-color: #E8F5E9'  # Light green for frac data
-                elif row['operation'].lower() == 'coil tubing':
-                    return 'background-color: #F3E5F5'  # Light purple for coil tubing data
                 return ''
 
             # Apply the styling
-            styled_df = filtered_df.style.apply(lambda x: [color_cells(v, x.name, x) for v in x], axis=1)
+            styled_df = filtered_df.style.apply(lambda x: [color_cells(v, x.name) for v in x])
 
             # Display the styled dataframe
             st.dataframe(styled_df)
