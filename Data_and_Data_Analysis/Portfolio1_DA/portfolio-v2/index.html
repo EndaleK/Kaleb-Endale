@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
 </head>
 <body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+        <i class="ph-sun theme-toggle__icon"></i>
+    </button>
+
     <div class="layout">
         <!-- Sidebar -->
         <aside class="sidebar" role="navigation">
@@ -32,9 +37,18 @@
                 </ul>
             </nav>
             
-            <button class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">
-                <i class="ph-sun theme-toggle__icon"></i>
-            </button>
+            <div class="sidebar__footer">
+                <div class="sidebar__social">
+                    <a href="https://www.linkedin.com/in/kaleb-endale-b45bb4316/" target="_blank" rel="noopener" class="sidebar__social-link">
+                        <i class="ph-linkedin-logo"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/EndaleK" target="_blank" rel="noopener" class="sidebar__social-link">
+                        <i class="ph-github-logo"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
         </aside>
         
         <!-- Main Content -->
@@ -494,18 +508,10 @@
                                 </div>
                                 <div class="contact__item">
                                     <i class="ph-clock"></i>
-                                    <span>Available for immediate opportunities</span>
+                                    <span>Available</span>
                                 </div>
                             </div>
                             <div class="contact__social">
-                                <a href="https://www.linkedin.com/in/kaleb-endale/" target="_blank" rel="noopener" class="social__link">
-                                    <i class="ph-linkedin-logo"></i>
-                                    LinkedIn
-                                </a>
-                                <a href="https://github.com/Kaleb-Endale" target="_blank" rel="noopener" class="social__link">
-                                    <i class="ph-github-logo"></i>
-                                    GitHub
-                                </a>
                             </div>
                         </div>
                         <form class="contact__form animate-on-scroll" data-delay="200" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">

@@ -21,7 +21,7 @@
   --font-size-base: 1rem;
   --line-height: 1.6;
   --spacing: 1rem;
-  --sidebar-width: 280px;
+  --sidebar-width: 322px;
 }
 
 /* Dark Theme */
@@ -221,12 +221,56 @@ body {
   box-shadow: 0 6px 20px rgba(100, 181, 246, 0.4);
 }
 
+/* Sidebar Footer */
+.sidebar__footer {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.sidebar__social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar__social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar__social-link:hover {
+  opacity: 1;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateX(6px);
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+}
+
+.sidebar__social-link i {
+  font-size: 1.25rem;
+  min-width: 20px;
+}
+
+.sidebar__social-link span {
+  font-size: 0.875rem;
+}
+
 /* Theme Toggle */
 .theme-toggle {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
@@ -237,13 +281,15 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
-  color: var(--sidebar-text);
+  color: white;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
 }
 
 .theme-toggle:hover {
   background: var(--primary-color);
   border-color: var(--primary-color);
-  transform: translateX(-50%) rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .theme-toggle__icon {
@@ -268,7 +314,7 @@ body {
 
 /* Intro Section */
 .intro {
-  min-height: 100vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,8 +492,8 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 1100px;
-  padding: 2rem;
+  max-width: 880px;
+  padding: 1.36rem;
   animation: contentFadeIn 1.2s ease-out forwards;
   opacity: 0;
 }
@@ -487,9 +533,9 @@ body {
 
 /* Enhanced Heading */
 .intro__heading {
-  font-size: 3.2rem;
+  font-size: 2.56rem;
   font-weight: 700;
-  margin-bottom: 3rem;
+  margin-bottom: 2.04rem;
   line-height: 1.2;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   position: relative;
@@ -584,12 +630,12 @@ body {
 }
 
 .intro__lead {
-  font-size: 1.25rem;
-  margin-bottom: 3rem;
+  font-size: 1rem;
+  margin-bottom: 2.04rem;
   opacity: 0.95;
   font-weight: 300;
   line-height: 1.6;
-  max-width: 800px;
+  max-width: 640px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -603,10 +649,10 @@ body {
 /* Expertise Cards */
 .intro__expertise {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin: 3rem 0;
-  max-width: 900px;
+  grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
+  gap: 1.02rem;
+  margin: 2.04rem 0;
+  max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -615,17 +661,17 @@ body {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 2.5rem 1.8rem;
+  border-radius: 16px;
+  padding: 1.7rem 1.44rem;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateY(30px);
+  transform: translateY(24px);
   opacity: 0;
   animation: cardSlideUp 0.8s ease-out forwards;
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 6.4px 25.6px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -680,9 +726,9 @@ body {
 }
 
 .expertise__icon {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 1.5rem;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.02rem;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
   border-radius: 50%;
   display: flex;
@@ -690,7 +736,7 @@ body {
   justify-content: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3.2px 16px rgba(0, 0, 0, 0.1);
 }
 
 .icon-glow {
@@ -717,7 +763,7 @@ body {
 }
 
 .expertise__icon i {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: white;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
@@ -737,15 +783,15 @@ body {
 }
 
 .expertise__card h3 {
-  font-size: 1.1rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.51rem;
   color: white;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .expertise__card p {
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   opacity: 0.9;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
@@ -802,22 +848,22 @@ body {
 
 /* Intro Closing */
 .intro__closing {
-  font-size: 1.15rem;
-  margin: 3rem auto 3rem;
+  font-size: 0.92rem;
+  margin: 2.04rem auto 2.04rem;
   opacity: 0.9;
   font-weight: 400;
   line-height: 1.7;
-  max-width: 650px;
+  max-width: 520px;
   font-style: italic;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .intro__cta {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.02rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin-top: 1.36rem;
 }
 
 .intro__cta .btn {
