@@ -139,16 +139,67 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filter === '*' || item.getAttribute('data-category') === filter) {
           item.style.display = 'block';
           item.style.opacity = '0';
+          item.style.transform = 'translateY(30px)';
           setTimeout(() => {
             item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
           }, 100);
         } else {
           item.style.opacity = '0';
+          item.style.transform = 'translateY(-30px)';
           setTimeout(() => {
             item.style.display = 'none';
           }, 300);
         }
       });
+    });
+  });
+  
+  // Portfolio item click interactions
+  portfolioItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Add click effect
+      this.style.transform = 'translateY(-5px) scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 150);
+      
+      // Optional: Add some feedback or action here
+      const title = this.querySelector('h3').textContent;
+      console.log(`Portfolio item clicked: ${title}`);
+      
+      // You could add modal opening, navigation, or other actions here
+    });
+    
+    // Add ripple effect
+    item.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: portfolioRipple 0.6s linear;
+        pointer-events: none;
+        z-index: 10;
+      `;
+      
+      this.appendChild(ripple);
+      
+      setTimeout(() => {
+        if (ripple.parentNode) {
+          ripple.parentNode.removeChild(ripple);
+        }
+      }, 600);
     });
   });
   
@@ -594,6 +645,12 @@ document.addEventListener('DOMContentLoaded', () => {
     @keyframes ripple {
       to {
         transform: scale(4);
+        opacity: 0;
+      }
+    }
+    @keyframes portfolioRipple {
+      to {
+        transform: scale(3);
         opacity: 0;
       }
     }
